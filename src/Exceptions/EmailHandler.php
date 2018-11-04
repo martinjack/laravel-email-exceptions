@@ -170,7 +170,13 @@ class EmailHandler extends ExceptionHandler
             config('app.name', 'unknown') . ' (' . config('app.env', 'unknown') . ')';
             $subject = config('laravelEmailExceptions.ErrorEmail.emailSubject') ?: $default;
 
-            $message->from(config('laravelEmailExceptions.ErrorEmail.fromEmailAddress'))
+            $message->from(
+
+                config('laravelEmailExceptions.ErrorEmail.fromEmailAddress'),
+
+                config('laravelEmailExceptions.ErrorEmail.fromName')
+
+            )
                 ->to(config('laravelEmailExceptions.ErrorEmail.toEmailAddress'))
                 ->subject($subject);
         });
