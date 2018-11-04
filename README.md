@@ -211,7 +211,7 @@ MAIL_ENCRYPTION=null
 http://github.com/abrigham1/laravel-email-exceptions/issues
 
 ## License
-Copyright (c) 2017 Aaron Brigham
+Copyright (c) 2017-2018 Aaron Brigham, Evgen Kytonin
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
