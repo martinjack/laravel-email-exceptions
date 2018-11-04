@@ -65,30 +65,32 @@ Default configuration:
 ```php
 'ErrorEmail' => [
     
-    'email' => true,
+    'email'                             => true,
     
-    'useSystemEmail' => true,
+    'useSystemEmail'                    => true,
     
-    'dontEmail' => [],
+    'dontEmail'                         => [],
     
-    'throttle' => false,
+    'throttle'                          => false,
     
-    'throttleCacheDriver' => env('CACHE_DRIVER', 'file'),
+    'throttleCacheDriver'               => env('CACHE_DRIVER', 'file'),
     
-    'throttleDurationMinutes' => 5,
-    'dontThrottle' => [],
+    'throttleDurationMinutes'           => 5,
+    'dontThrottle'                      => [],
     
-    'globalThrottle' => true,
+    'globalThrottle'                    => true,
     
-    'globalThrottleLimit' => 20,
+    'globalThrottleLimit'               => 20,
     
-    'globalThrottleDurationMinutes' => 30,
+    'globalThrottleDurationMinutes'     => 30,
     
-    'toEmailAddress' => null,
+    'toEmailAddress'                    => null,
     
-    'fromEmailAddress' => null,
+    'fromEmailAddress'                  => null,
+
+    'fromName'                          => null,
     
-    'emailSubject' => null
+    'emailSubject'                      => null
 ]
 ```
 
@@ -104,6 +106,7 @@ Default configuration:
 * throttleDurationMinutes (int) - The duration in minutes of the global throttle for example if you put in 30 and have 10 for your globalThrottleLimit when the first email is sent out a 30 minute timer will commence once you reach the 10 email threshold no more emails will go out for that 30 minute period. 
 * toEmailAddress (string|array) - The email(s) to send the exceptions emails to such as the dev team dev@yoursite.com
 * fromEmailAddress (string) - The email address these emails should be sent from such as noreply@yoursite.com.
+* fromName (string) - Name sender
 * emailSubject (string) - The subject of email, leave NULL to use default Default Subject: An Exception has been thrown on APP_URL APP_ENV
 
 **Note:** the dontReport variable from **app/Exceptions/Handler.php** file will also not be emailed as it's assumed if they are not important enough to log then they also are not important enough to email
@@ -116,31 +119,33 @@ Update your config values in **config/laravelEmailExceptions.php**
 ```php
 'ErrorEmail' => [
 
-    'email' => true,
+    'email'                             => true,
 
-    'useSystemEmail' => true,
+    'useSystemEmail'                    => true,
 
-    'dontEmail' => [],
+    'dontEmail'                         => [],
 
-    'throttle' => true,
+    'throttle'                          => true,
 
-    'throttleCacheDriver' => env('CACHE_DRIVER', 'file'),
+    'throttleCacheDriver'               => env('CACHE_DRIVER', 'file'),
 
-    'throttleDurationMinutes' => 5,
+    'throttleDurationMinutes'           => 5,
 
-    'dontThrottle' => [],
+    'dontThrottle'                      => [],
 
-    'globalThrottle' => true,
+    'globalThrottle'                    => true,
 
-    'globalThrottleLimit' => 20,
+    'globalThrottleLimit'               => 20,
 
-    'globalThrottleDurationMinutes' => 30,
+    'globalThrottleDurationMinutes'     => 30,
 
-    'toEmailAddress' => 'dev@yoursite.com',
+    'toEmailAddress'                    => 'dev@yoursite.com',
 
-    'fromEmailAddress' => 'noreply@yoursite.com',
+    'fromEmailAddress'                  => 'noreply@yoursite.com',
 
-    'emailSubject' => null,
+    'fromName'                          => 'Reports',
+
+    'emailSubject'                      => null,
 
 ]
 ```
