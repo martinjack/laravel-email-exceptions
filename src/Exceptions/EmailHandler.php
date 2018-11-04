@@ -3,11 +3,9 @@
 namespace Abrigham\LaravelEmailExceptions\Exceptions;
 
 use Exception;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Support\Facades\Cache;
 use Mail;
-use \Swift_Mailer;
-use \Swift_SmtpTransport;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class EmailHandler extends ExceptionHandler
 {
@@ -21,6 +19,7 @@ class EmailHandler extends ExceptionHandler
      * @var null|string throttle cache key
      */
     protected $throttleCacheKey = null;
+
 
     /**
      * Report or log an exception.
@@ -111,80 +110,22 @@ class EmailHandler extends ExceptionHandler
      */
     protected function mailException(Exception $exception)
     {
-
-        $default_mail = Mail::getSwiftMailer();
-
         $data = [
-
             'exception' => $exception,
-
-            'toEmail'   => config('laravelEmailExceptions.ErrorEmail.toEmailAddress'),
-
+            'toEmail' => config('laravelEmailExceptions.ErrorEmail.toEmailAddress'),
             'fromEmail' => config('laravelEmailExceptions.ErrorEmail.fromEmailAddress'),
-
         ];
-
-        if (!config('laravelEmailExceptions.ErrorEmail.useSystemEmail')) {
-
-            $settings = new Swift_SmtpTransport(
-
-                config('laravelEmailExceptions.EmailReports.host'),
-
-                config('laravelEmailExceptions.EmailReports.port'),
-
-                config('laravelEmailExceptions.EmailReports.encryption')
-
-            );
-
-            $settings->setUsername(
-
-                config('laravelEmailExceptions.EmailReports.username')
-
-            );
-
-            $settings->setPassword(
-
-                config('laravelEmailExceptions.EmailReports.password')
-
-            );
-
-            Mail::setSwiftMailer(
-
-                new Swift_Mailer(
-
-                    $settings
-
-                )
-
-            );
-
-        } else {
-
-            $default_mail = null;
-
-        }
 
         Mail::send('laravelEmailExceptions::emailException', $data, function ($message) {
 
-            $default = 'An Exception has been thrown on ' .
-            config('app.name', 'unknown') . ' (' . config('app.env', 'unknown') . ')';
+            $default = 'An Exception has been thrown on '.
+                config('app.name', 'unknown').' ('.config('app.env', 'unknown').')';
             $subject = config('laravelEmailExceptions.ErrorEmail.emailSubject') ?: $default;
 
             $message->from(config('laravelEmailExceptions.ErrorEmail.fromEmailAddress'))
                 ->to(config('laravelEmailExceptions.ErrorEmail.toEmailAddress'))
                 ->subject($subject);
         });
-
-        if ($default_mail) {
-
-            Mail::setSwiftMailer(
-
-                $default_mail
-
-            );
-
-        }
-
     }
 
     /**
@@ -291,7 +232,7 @@ class EmailHandler extends ExceptionHandler
             $this->throttleCacheKey = preg_replace(
                 "/[^A-Za-z0-9]/",
                 '',
-                'laravelEmailException' . get_class($exception) . $exception->getMessage() . $exception->getCode()
+                'laravelEmailException'.get_class($exception).$exception->getMessage().$exception->getCode()
             );
         }
 

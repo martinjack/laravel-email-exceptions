@@ -6,8 +6,6 @@ return [
      *
      * - email (bool) - Enable or disable emailing of errors/exceptions
      *
-     * - useSystemEmail (bool) - Enable or disable use of system email. If disabled configure EmailReports block
-     *
      * - dontEmail (array) - An array of classes that should never be emailed
      *   even if they are thrown Ex: ['']
      *
@@ -42,62 +40,18 @@ return [
      *   Default Subject: An Exception has been thrown on APP_URL APP_ENV
      *
      */
-    'ErrorEmail'   => [
-
-        'email'                         => true,
-
-        'useSystemEmail'                => true,
-
-        'dontEmail'                     => [],
-
-        'throttle'                      => true,
-
-        'throttleCacheDriver'           => env('CACHE_DRIVER', 'file'),
-
-        'throttleDurationMinutes'       => 5,
-
-        'dontThrottle'                  => [],
-
-        'globalThrottle'                => true,
-
-        'globalThrottleLimit'           => 20,
-
+    'ErrorEmail' => [
+        'email' => true,
+        'dontEmail' => [],
+        'throttle' => true,
+        'throttleCacheDriver' => env('CACHE_DRIVER', 'file'),
+        'throttleDurationMinutes' => 5,
+        'dontThrottle' => [],
+        'globalThrottle' => true,
+        'globalThrottleLimit' => 20,
         'globalThrottleDurationMinutes' => 30,
-
-        'toEmailAddress'                => null,
-
-        'fromEmailAddress'              => null,
-
-        'emailSubject'                  => null,
-
-    ],
-    /**
-     *
-     * Configure email for sending reports
-     *
-     * host     - Host mail server
-     *
-     * port     - Port server
-     *
-     * username - Username mail account
-     *
-     * password - Password mail account
-     *
-     * encryption - Type encryption mail. Default: tls
-     *
-     */
-    'EmailReports' => [
-
-        'host'       => 'smtp.mailtrap.io',
-
-        'port'       => 2525,
-
-        'username'   => '',
-
-        'password'   => '',
-
-        'encryption' => 'tls',
-
-    ],
-
+        'toEmailAddress' => null,
+        'fromEmailAddress' => null,
+        'emailSubject' => null
+    ]
 ];
