@@ -64,22 +64,36 @@ resources/views/vendor/laravelEmailExceptions/emailExceptions.blade.php
 Default configuration:
 ```php
 'ErrorEmail' => [
+    
     'email' => true,
+    
+    'useSystemEmail' => true,
+    
     'dontEmail' => [],
+    
     'throttle' => false,
+    
     'throttleCacheDriver' => env('CACHE_DRIVER', 'file'),
+    
     'throttleDurationMinutes' => 5,
     'dontThrottle' => [],
+    
     'globalThrottle' => true,
+    
     'globalThrottleLimit' => 20,
+    
     'globalThrottleDurationMinutes' => 30,
+    
     'toEmailAddress' => null,
+    
     'fromEmailAddress' => null,
+    
     'emailSubject' => null
 ]
 ```
 
 * email (bool) - Enable or disable emailing of errors/exceptions
+* useSystemEmail (bool) - Enable or disable use of system email. If disabled configure EmailReports block
 * dontEmail (array) - This works exactly like laravel's $dontReport variable documented here: https://laravel.com/docs/5.4/errors#the-exception-handler under Ignoring Exceptions By Type. Keep in mind also any exceptions under laravel's $dontReport also will not be emailed
 * throttle (bool) - Enable or disable throttling of exception emails. Throttling is only performed if its been determined the exact same exception/error has already been emailed by checking the cache. Errors/Exceptions are determined to be unique by exception class + exception message + exception code
 * throttleCacheDriver (string) - The cache driver to use for throttling, by default it uses CACHE_DRIVER from your env file
@@ -101,18 +115,48 @@ Default configuration:
 Update your config values in **config/laravelEmailExceptions.php**
 ```php
 'ErrorEmail' => [
+
     'email' => true,
+
+    'useSystemEmail' => true,
+
     'dontEmail' => [],
+
     'throttle' => true,
+
     'throttleCacheDriver' => env('CACHE_DRIVER', 'file'),
+
     'throttleDurationMinutes' => 5,
+
     'dontThrottle' => [],
+
     'globalThrottle' => true,
+
     'globalThrottleLimit' => 20,
+
     'globalThrottleDurationMinutes' => 30,
+
     'toEmailAddress' => 'dev@yoursite.com',
+
     'fromEmailAddress' => 'noreply@yoursite.com',
+
     'emailSubject' => null,
+
+]
+```
+#### EmailReports
+```php
+'EmailReports' => [
+
+    'host'       => 'smtp.mailtrap.io',
+
+    'port'       => 2525,
+
+    'username'   => '',
+
+    'password'   => '',
+
+    'encryption' => 'tls',
 ]
 ```
 
