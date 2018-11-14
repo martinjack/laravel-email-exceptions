@@ -11,52 +11,62 @@ use \Swift_SmtpTransport;
 
 class EmailHandler extends ExceptionHandler
 {
-
     /**
      * @var string global throttle cache key
      */
     protected $globalThrottleCacheKey = "email_exception_global";
-
     /**
      * @var null|string throttle cache key
      */
     protected $throttleCacheKey = null;
-
     /**
      * Report or log an exception.
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
      * @param  \Exception $exception
-     * @return void
+     *
+     * @return VOID
+     *
      */
     public function report(Exception $exception)
     {
-        // check if we should mail this exception
-        if ($this->shouldMail($exception)) {
-            // if we passed our validation lets mail the exception
-            $this->mailException($exception);
+
+        if (!config('app.debug')) {
+
+            // check if we should mail this exception
+            if ($this->shouldMail($exception)) {
+
+                // if we passed our validation lets mail the exception
+                $this->mailException($exception);
+
+            }
+
         }
 
         // run the parent report (logs exception and all that good stuff)
         $this->callParentReport($exception);
-    }
 
+    }
     /**
-     * wrapping the parent call to isolate for testing
+     * Wrapping the parent call to isolate for testing
      *
      * @param Exception $exception
+     *
+     * @return VOID
+     *
      */
     protected function callParentReport(Exception $exception)
     {
         parent::report($exception);
     }
-
     /**
      * Determine if the exception should be mailed
      *
      * @param Exception $exception
-     * @return bool
+     *
+     * @return BOOLEAN
+     *
      */
     protected function shouldMail(Exception $exception)
     {
@@ -89,25 +99,31 @@ class EmailHandler extends ExceptionHandler
 
         // we made it past all the possible reasons to not email so we should mail this exception
         return true;
-    }
 
+    }
     /**
-     * app specific dont email logic should go in this function
+     * App specific dont email logic should go in this function
      *
      * @param Exception $exception
-     * @return bool
+     *
+     * @return BOOLEAN
+     *
      */
     protected function appSpecificDontEmail(Exception $exception)
     {
+
         // override this in app/Exceptions/Handler.php if you need more complicated logic
         // then checking instanceof with exception classes
         return false;
-    }
 
+    }
     /**
-     * mail the exception
+     * Mail the exception
      *
      * @param Exception $exception
+     *
+     * @return VOID
+     *
      */
     protected function mailException(Exception $exception)
     {
@@ -192,24 +208,28 @@ class EmailHandler extends ExceptionHandler
         }
 
     }
-
     /**
-     * check if we need to globally throttle the exception
+     * Check if we need to globally throttle the exception
      *
-     * @return bool
+     * @return BOOLEAN
+     *
      */
     protected function globalThrottle()
     {
         // check if global throttling is turned on
         if (config('laravelEmailExceptions.ErrorEmail.globalThrottle') == false) {
+
             // no need to throttle since global throttling has been disabled
             return false;
+
         } else {
+
             // if we have a cache key lets determine if we are over the limit or not
             if (Cache::store(
                 config('laravelEmailExceptions.ErrorEmail.throttleCacheDriver')
             )->has($this->globalThrottleCacheKey)
             ) {
+
                 // if we are over the limit return true since this should be throttled
                 if (Cache::store(
                     config('laravelEmailExceptions.ErrorEmail.throttleCacheDriver')
@@ -218,16 +238,22 @@ class EmailHandler extends ExceptionHandler
                     0
                 ) >= config('laravelEmailExceptions.ErrorEmail.globalThrottleLimit')
                 ) {
+
                     return true;
+
                 } else {
+
                     // else lets increment the cache key and return false since its not time to throttle yet
                     Cache::store(
                         config('laravelEmailExceptions.ErrorEmail.throttleCacheDriver')
                     )->increment($this->globalThrottleCacheKey);
 
                     return false;
+
                 }
+
             } else {
+
                 // we didn't find an item in cache lets put it in the cache
                 Cache::store(
                     config('laravelEmailExceptions.ErrorEmail.throttleCacheDriver')
@@ -238,16 +264,22 @@ class EmailHandler extends ExceptionHandler
                 );
 
                 // if we're just making the cache key now we are not global throttling yet
-                return false;
-            }
-        }
-    }
 
+                return false;
+
+            }
+
+        }
+
+    }
     /**
-     * check if we need to throttle the exception and do the throttling if required
+     *
+     * Check if we need to throttle the exception and do the throttling if required
      *
      * @param Exception $exception
-     * @return bool return true if we should throttle or false if we should not
+     *
+     * @return BOOLEAN return true if we should throttle or false if we should not
+     *
      */
     protected function throttle(Exception $exception)
     {
@@ -256,7 +288,9 @@ class EmailHandler extends ExceptionHandler
             $this->isInDontThrottleList($exception)
         ) {
             // report that we do not need to throttle
+
             return false;
+
         } else {
             // else lets check if its been reported within the last throttle period
             if (Cache::store(
@@ -264,7 +298,9 @@ class EmailHandler extends ExceptionHandler
             )->has($this->getThrottleCacheKey($exception))
             ) {
                 // if its in the cache we need to throttle
+
                 return true;
+
             } else {
                 // its not in the cache lets add it to the cache
                 Cache::store(
@@ -277,15 +313,19 @@ class EmailHandler extends ExceptionHandler
 
                 // report that we do not need to throttle as its not been reported within the last throttle period
                 return false;
-            }
-        }
-    }
 
+            }
+
+        }
+
+    }
     /**
-     * get the throttle cache key
+     * Get the throttle cache key
      *
      * @param Exception $exception
-     * @return mixed
+     *
+     * @return MIXED
+     *
      */
     protected function getThrottleCacheKey(Exception $exception)
     {
@@ -303,14 +343,16 @@ class EmailHandler extends ExceptionHandler
 
         // return the cache key
         return $this->throttleCacheKey;
-    }
 
+    }
     /**
-     * check if a given exception matches the class of any in the list
+     * Check if a given exception matches the class of any in the list
      *
      * @param $list
      * @param Exception $exception
-     * @return bool
+     *
+     * @return BOOLEAN
+     *
      */
     protected function isInList($list, Exception $exception)
     {
@@ -327,13 +369,15 @@ class EmailHandler extends ExceptionHandler
 
         // we got to the end there must be no match
         return false;
-    }
 
+    }
     /**
-     * check if the exception is in the dont throttle list
+     * Check if the exception is in the dont throttle list
      *
      * @param Exception $exception
-     * @return bool
+     *
+     * @return BOOLEAN
+     *
      */
     protected function isInDontThrottleList(Exception $exception)
     {
@@ -341,12 +385,13 @@ class EmailHandler extends ExceptionHandler
 
         return $this->isInList($dontThrottleList, $exception);
     }
-
     /**
-     * check if the exception is in the dont email list
+     * Check if the exception is in the dont email list
      *
      * @param Exception $exception
-     * @return bool
+     *
+     * @return BOOLEAN
+     *
      */
     protected function isInDontEmailList(Exception $exception)
     {
