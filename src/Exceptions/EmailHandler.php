@@ -2,10 +2,10 @@
 
 namespace Abrigham\LaravelEmailExceptions\Exceptions;
 
-use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Cache;
 use Mail;
+use Throwable;
 use \Swift_Mailer;
 use \Swift_SmtpTransport;
 
@@ -29,7 +29,7 @@ class EmailHandler extends ExceptionHandler
      * @return VOID
      *
      */
-    public function report(Exception $exception)
+    public function report(Throwable $exception)
     {
 
         if (!config('app.debug')) {
@@ -51,24 +51,24 @@ class EmailHandler extends ExceptionHandler
     /**
      * Wrapping the parent call to isolate for testing
      *
-     * @param Exception $exception
+     * @param Throwable $exception
      *
      * @return VOID
      *
      */
-    protected function callParentReport(Exception $exception)
+    protected function callParentReport(Throwable $exception)
     {
         parent::report($exception);
     }
     /**
      * Determine if the exception should be mailed
      *
-     * @param Exception $exception
+     * @param Throwable $exception
      *
      * @return BOOLEAN
      *
      */
-    protected function shouldMail(Exception $exception)
+    protected function shouldMail(Throwable $exception)
     {
         // if emailing is turned off in the config
         if (config('laravelEmailExceptions.ErrorEmail.email') != true ||
@@ -104,12 +104,12 @@ class EmailHandler extends ExceptionHandler
     /**
      * App specific dont email logic should go in this function
      *
-     * @param Exception $exception
+     * @param Throwable $exception
      *
      * @return BOOLEAN
      *
      */
-    protected function appSpecificDontEmail(Exception $exception)
+    protected function appSpecificDontEmail(Throwable $exception)
     {
 
         // override this in app/Exceptions/Handler.php if you need more complicated logic
@@ -120,12 +120,12 @@ class EmailHandler extends ExceptionHandler
     /**
      * Mail the exception
      *
-     * @param Exception $exception
+     * @param Throwable $exception
      *
      * @return VOID
      *
      */
-    protected function mailException(Exception $exception)
+    protected function mailException(Throwable $exception)
     {
 
         $default_mail = Mail::getSwiftMailer();
@@ -276,12 +276,12 @@ class EmailHandler extends ExceptionHandler
      *
      * Check if we need to throttle the exception and do the throttling if required
      *
-     * @param Exception $exception
+     * @param Throwable $exception
      *
      * @return BOOLEAN return true if we should throttle or false if we should not
      *
      */
-    protected function throttle(Exception $exception)
+    protected function throttle(Throwable $exception)
     {
         // if throttling is turned off or its in the dont throttle list we won't throttle this exception
         if (config('laravelEmailExceptions.ErrorEmail.throttle') == false ||
@@ -322,12 +322,12 @@ class EmailHandler extends ExceptionHandler
     /**
      * Get the throttle cache key
      *
-     * @param Exception $exception
+     * @param Throwable $exception
      *
      * @return MIXED
      *
      */
-    protected function getThrottleCacheKey(Exception $exception)
+    protected function getThrottleCacheKey(Throwable $exception)
     {
 
         // if we haven't already set the cache key lets set it
@@ -349,12 +349,12 @@ class EmailHandler extends ExceptionHandler
      * Check if a given exception matches the class of any in the list
      *
      * @param $list
-     * @param Exception $exception
+     * @param Throwable $exception
      *
      * @return BOOLEAN
      *
      */
-    protected function isInList($list, Exception $exception)
+    protected function isInList($list, Throwable $exception)
     {
         // check if we actually have a list and its an array
         if ($list && is_array($list)) {
@@ -374,12 +374,12 @@ class EmailHandler extends ExceptionHandler
     /**
      * Check if the exception is in the dont throttle list
      *
-     * @param Exception $exception
+     * @param Throwable $exception
      *
      * @return BOOLEAN
      *
      */
-    protected function isInDontThrottleList(Exception $exception)
+    protected function isInDontThrottleList(Throwable $exception)
     {
         $dontThrottleList = config('laravelEmailExceptions.ErrorEmail.dontThrottle');
 
@@ -388,12 +388,12 @@ class EmailHandler extends ExceptionHandler
     /**
      * Check if the exception is in the dont email list
      *
-     * @param Exception $exception
+     * @param Throwable $exception
      *
      * @return BOOLEAN
      *
      */
-    protected function isInDontEmailList(Exception $exception)
+    protected function isInDontEmailList(Throwable $exception)
     {
         $dontEmailList = config('laravelEmailExceptions.ErrorEmail.dontEmail');
 
