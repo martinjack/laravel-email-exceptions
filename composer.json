@@ -1,51 +1,51 @@
 {
-    "name": "jackmartin/laravel-email-exceptions",
-    "description": "Email Exceptions from your laravel application",
-    "license": "MIT",
-    "keywords": [
-        "email",
-        "exception",
-        "laravel",
-        "laravel-5-package",
-        "exception-handling",
-        "debugging"
-    ],
-    "authors": [
-        {
-            "name": "Aaron Brigham",
-            "email": "abrigham1@gmail.com"
-        },
-        {
-            "name": "Evgen Kytonin",
-            "email": "killfess@gmail.com"
-        }
-    ],
-    "minimum-stability": "stable",
-    "require": {
-        "php": "^5.6 || ^7.2",
-        "illuminate/support": "^5.5 || ^6.0"
+  "name": "jackmartin/laravel-email-exceptions",
+  "description": "Email Exceptions from your laravel application",
+  "license": "MIT",
+  "keywords": [
+    "email",
+    "exception",
+    "laravel",
+    "laravel-5-package",
+    "exception-handling",
+    "debugging"
+  ],
+  "authors": [
+    {
+      "name": "Aaron Brigham",
+      "email": "abrigham1@gmail.com"
     },
-    "require-dev": {
-        "phpunit/phpunit": "8.*",
-        "squizlabs/php_codesniffer": "2.*",
-        "orchestra/testbench": "~3.0",
-        "mockery/mockery": "^0.9.7"
-    },
-    "autoload": {
-        "psr-4": {
-            "Abrigham\\LaravelEmailExceptions\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Abrigham\\LaravelEmailExceptions\\Tests\\": "tests/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Abrigham\\LaravelEmailExceptions\\EmailExceptionsServiceProvider"
-            ]
-        }
+    {
+      "name": "Evgen Kytonin",
+      "email": "killfess@gmail.com"
     }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": "^5.6 || ^7.2",
+    "illuminate/support": "^5.5 || ^6.0 || ^7.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.0",
+    "squizlabs/php_codesniffer": "2.*",
+    "orchestra/testbench": "~3.0",
+    "mockery/mockery": "^0.9.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "Abrigham\\LaravelEmailExceptions\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Abrigham\\LaravelEmailExceptions\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Abrigham\\LaravelEmailExceptions\\EmailExceptionsServiceProvider"
+      ]
+    }
+  }
 }
